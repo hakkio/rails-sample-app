@@ -15,8 +15,8 @@ describe "Authentication" do
 		describe "with invalid information" do
 			before { click_button submit }
 
-			it { should have_selector('title',                 text: 'Sign in') }
-			it { should have_selector('div.alert.alert-error', text: 'Invalid') }
+			it { should have_title('Sign in') }
+			it { should have_error_message('Invalid') }
 
 			describe "after visiting another page" do
 				before { click_link "Home" }
@@ -28,8 +28,7 @@ describe "Authentication" do
 			let(:user) { FactoryGirl.create(:user) }
 
 			before do
-				fill_in "Email",    with: user.email.upcase   # The upcase is to test case insensitivity
-				fill_in "Password", with: user.password
+				signin_fill_in_form(user)
 				click_button submit
 			end
 

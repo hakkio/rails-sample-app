@@ -9,7 +9,7 @@ describe "UserPages" do
 		before { visit user_path(user) }
 
 		it { should have_selector('h1',    text: user.name) }
-		it { should have_selector('title', text: user.name) }
+		it { should have_title(user.name) }
 	end
 
 	describe "signup page" do
@@ -17,7 +17,7 @@ describe "UserPages" do
 		let(:submit) { "Create my account" }
 
 		it { should have_selector('h1',    text: 'Sign up') }
-		it { should have_selector('title', text: full_title('Sign up'))}
+		it { should have_title(full_title('Sign up')) }
 
 		describe "with invalid information" do
 			it "should not create a user" do
@@ -30,14 +30,11 @@ describe "UserPages" do
 				it { should have_selector('h1', text: 'Sign up') }
 
 				# Error messages
-				#it { should have_selector('div.alert.alert-error',       text: 'The form contains') }
-				#it { should have_error_message('The form contains') }
-				it { should have_alert_message('error', 'The form contains') }
-				#it { should have_error_message('Invalid') }
-				it { should have_selector('div#error_explanation ul li', text: 'Email is invalid') }
-				it { should have_selector('div#error_explanation ul li', text: 'Name can\'t be blank') }
-				it { should have_selector('div#error_explanation ul li', text: 'Password can\'t be blank') }
-				it { should have_selector('div#error_explanation ul li', text: 'Password confirmation') }
+				it { should have_error_message('The form contains') }
+				it { should have_error_field('Email is invalid') }
+				it { should have_error_field('Name can\'t be blank') }
+				it { should have_error_field('Password can\'t be blank') }
+				it { should have_error_field('Password confirmation') }
 
 				# Make sure fields are highlighted
 				it { should have_selector('div.field_with_errors') }
@@ -45,12 +42,7 @@ describe "UserPages" do
 		end
 
 		describe "with valid information" do
-			before do
-				fill_in "Name",         with: "Example User"
-				fill_in "Email",        with: "user@example.com"
-				fill_in "Password",     with: "foobar"
-				fill_in "Confirmation", with: "foobar"
-			end
+			before { signup_fill_in_form } 
 
 			it "should create a user" do
 				expect { click_button submit }.to change(User, :count).by(1)
@@ -61,11 +53,8 @@ describe "UserPages" do
 				
 				let (:user) { User.find_by_email('user@example.com')}
 
-				it { should have_selector('title',                   text: user.name) }
-
-				it { should have_alert_message('success', 'Welcome') }
-				#it { should have_selector('div.alert.alert-success', text: 'Welcome') }
-
+				it { should have_title(user.name) }
+				it { should have_success_message('Welcome') }
 				it { should have_link('Sign out') }
 			end
 		end	

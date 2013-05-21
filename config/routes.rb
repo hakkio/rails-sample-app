@@ -13,7 +13,7 @@ SampleApp::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
 
 
-  # Define pages for essions
+  # Define pages for sessions
   match '/signup',  to: 'users#new'
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete    # The last "via" indicates this should be invoked via http DELETE request
