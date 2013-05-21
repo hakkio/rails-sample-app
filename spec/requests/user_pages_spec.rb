@@ -30,7 +30,10 @@ describe "UserPages" do
 				it { should have_selector('h1', text: 'Sign up') }
 
 				# Error messages
-				it { should have_selector('div.alert.alert-error',       text: 'The form contains') }
+				#it { should have_selector('div.alert.alert-error',       text: 'The form contains') }
+				#it { should have_error_message('The form contains') }
+				it { should have_alert_message('error', 'The form contains') }
+				#it { should have_error_message('Invalid') }
 				it { should have_selector('div#error_explanation ul li', text: 'Email is invalid') }
 				it { should have_selector('div#error_explanation ul li', text: 'Name can\'t be blank') }
 				it { should have_selector('div#error_explanation ul li', text: 'Password can\'t be blank') }
@@ -59,7 +62,10 @@ describe "UserPages" do
 				let (:user) { User.find_by_email('user@example.com')}
 
 				it { should have_selector('title',                   text: user.name) }
-				it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+
+				it { should have_alert_message('success', 'Welcome') }
+				#it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+
 				it { should have_link('Sign out') }
 			end
 		end	
