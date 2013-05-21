@@ -4,10 +4,20 @@ SampleApp::Application.routes.draw do
   match '/help',    to: 'static_pages#help'
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
-  match '/signup',  to: 'users#new'
 
   resources :users
 
+  # There is no need to show or edit sessions
+  # Because of this, we will use ":only" to set up new, create and destroy actions only.
+  # This creates "GET", "POST" and "DELETE" HTTP requests only
+  resources :sessions, only: [:new, :create, :destroy]
+
+
+  # Define pages for essions
+  match '/signup',  to: 'users#new'
+  match '/signin',  to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy', via: :delete    # The last "via" indicates this should be invoked via http DELETE request
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

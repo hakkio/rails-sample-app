@@ -14,8 +14,10 @@ describe "UserPages" do
 
 	describe "signup page" do
 		before { visit signup_path }
-
 		let(:submit) { "Create my account" }
+
+		it { should have_selector('h1',    text: 'Sign up') }
+		it { should have_selector('title', text: full_title('Sign up'))}
 
 		describe "with invalid information" do
 			it "should not create a user" do
@@ -25,8 +27,10 @@ describe "UserPages" do
 			describe "after submission" do
 				before { click_button submit }
 
+				it { should have_selector('h1', text: 'Sign up') }
+
 				# Error messages
-				it { should have_selector('div.alert.alert-error', text: 'The form contains') }
+				it { should have_selector('div.alert.alert-error',       text: 'The form contains') }
 				it { should have_selector('div#error_explanation ul li', text: 'Email is invalid') }
 				it { should have_selector('div#error_explanation ul li', text: 'Name can\'t be blank') }
 				it { should have_selector('div#error_explanation ul li', text: 'Password can\'t be blank') }
@@ -54,13 +58,12 @@ describe "UserPages" do
 				
 				let (:user) { User.find_by_email('user@example.com')}
 
-				it { should have_selector('title', text: user.name) }
+				it { should have_selector('title',                   text: user.name) }
 				it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+				it { should have_link('Sign out') }
 			end
 		end	
 
-		it { should have_selector('h1',    text: 'Sign up') }
-		it { should have_selector('title', text: full_title('Sign up'))}
 	end
 
 end
