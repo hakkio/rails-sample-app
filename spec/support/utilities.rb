@@ -4,9 +4,12 @@ include ApplicationHelper
 # More info on this here:
 # http://ruby.railstutorial.org/chapters/sign-in-sign-out#code-have_error_message
 
-def signin_fill_in_form(user)
+def sign_in(user)
+  visit signin_path
   fill_in "Email",    with: user.email.upcase
   fill_in "Password", with: user.password
+  click_button "Sign in"
+  cookies[:remember_token] = user.remember_token
 end
 
 def signup_fill_in_form
