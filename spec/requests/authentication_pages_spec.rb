@@ -9,14 +9,23 @@ describe "Authentication" do
 		
 		let(:submit) { "Sign in" }
 
-		it { should have_selector('h1',    text: 'Sign in') }
-		it { should have_selector('title', text: 'Sign in') }
+		let(:user) { FactoryGirl.create(:user) }
+
+		it { should have_selector('h1',       text: 'Sign in') }
+		it { should have_selector('title',    text: 'Sign in') }
+		it { should_not have_link('Profile',  href: user_path(user)) }
+	    it { should_not have_link('Settings', href: edit_user_path(user)) }
 
 		describe "with invalid information" do
 			before { click_button submit }
 
 			it { should have_title('Sign in') }
 			it { should have_error_message('Invalid') }
+			
+			it "should still not have profile and signin links" do
+				should_not have_link('Profile',  href: user_path(user))
+	    		should_not have_link('Settings', href: edit_user_path(user)) 
+	    	end
 
 			describe "after visiting another page" do
 				before { click_link "Home" }
@@ -25,8 +34,6 @@ describe "Authentication" do
 		end
 
 		describe "with valid information" do
-			let(:user) { FactoryGirl.create(:user) }
-
 			before { sign_in(user) }
 
 			it { should have_selector('title',    text: user.name) }

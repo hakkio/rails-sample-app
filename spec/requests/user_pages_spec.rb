@@ -38,10 +38,14 @@ describe "UserPages" do
 				end
 
 				it { should have_link('delete', href: user_path(User.first)) }
-				it "should be able to deletee another user" do
+				it "should be able to delete another user" do
 					expect {click_link('delete') }.to change(User, :count).by(-1)
 				end
 				it { should_not have_link('delete', href: user_path(admin)) }
+
+				it 'should not be able to delete themself' do
+					expect { page.driver.delete(user_path(admin)) }.to change(User, :count).by(0)
+				end
 			end
 		end
 	end
@@ -138,7 +142,7 @@ describe "UserPages" do
 			it { should have_title(new_name) }
 			it { should have_link('Sign out', href: signout_path) }
 			specify { user.reload.name.should  == new_name }
-      specify { user.reload.email.should == new_email }
+      		specify { user.reload.email.should == new_email }
 		end
 	end
 end

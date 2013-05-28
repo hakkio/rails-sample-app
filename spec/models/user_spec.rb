@@ -48,11 +48,14 @@ describe User do
       it { should be_admin }
     end
 
+    it "should not be able to access admin attribute" do
+      expect { @user.update_attributes(admin: true) }.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+    end
 
   # == NAME VALIDATIONS:
 
   	describe "when name is not present" do
-  			before { @user.name = " "    }
+  		before { @user.name = " "    }
   		it     { should_not be_valid }
   	end
 
