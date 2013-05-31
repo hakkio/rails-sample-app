@@ -40,4 +40,14 @@ module SessionsHelper
 	def store_location
 		session[:return_to] = request.url
 	end
+
+# == Signed in user redirect
+
+	def signed_in_user
+      unless signed_in?
+        store_location
+        redirect_to signin_url, notice: "Please sign in."
+      end 
+      #redirect_to signin_url, notice: "Please sign in." unless signed_in?
+    end
 end
