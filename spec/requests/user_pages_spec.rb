@@ -64,6 +64,26 @@ describe "UserPages" do
 	      it { should have_content(m1.content) }
 	      it { should have_content(m2.content) }
 	      it { should have_content(user.microposts.count) }
+
+	      describe "after logging in" do
+	      	before do
+	      		sign_in user
+	      		visit user_path(user)
+	      	end
+	    	it { should have_link('delete', href: micropost_path(m1)) }
+
+	    	describe "viewing another user's profile" do
+		    	let(:another_user) { FactoryGirl.create(:user) }
+		      	let!(:m3) { FactoryGirl.create(:micropost, user: another_user, content: "Foo") }
+	    		let!(:m4) { FactoryGirl.create(:micropost, user: another_user, content: "Bar") }
+		    	before do
+		    		sign_in user
+		    		visit user_path(another_user)
+		    	end
+
+		    	it { should_not have_link('delete') }
+	    	end  	
+	      end
 	    end
 	  end
 

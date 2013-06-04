@@ -15,3 +15,31 @@
 //= require bootstrap
 //= require_tree .
 
+$(document).ready(function () {
+
+  $('#micropost_content').keypress(function (event) {
+    var max = 140;
+    var len = $(this).val().length;
+
+    if (event.which < 0x20) {
+      // e.which < 0x20, then it's not a printable character
+      // e.which === 0 - Not a character
+      return; // Do nothing
+    }
+
+    if (len >= max) {
+      event.preventDefault();
+    }
+
+  });
+
+  $('#micropost_content').keyup(function (event) {
+    var max = 140;
+    var len = $(this).val().length;
+    var char = max - len;
+
+    $('#textleft').text(char + ' characters left');
+
+  });
+
+});

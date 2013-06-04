@@ -1,5 +1,5 @@
 include ApplicationHelper
-
+include ActionView
 
 # More info on this here:
 # http://ruby.railstutorial.org/chapters/sign-in-sign-out#code-have_error_message
