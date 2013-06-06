@@ -5,7 +5,11 @@ SampleApp::Application.routes.draw do
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
 
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
 
   # There is no need to show or edit sessions
   # Because of this, we will use ":only" to set up new, create and destroy actions only.
@@ -16,6 +20,9 @@ SampleApp::Application.routes.draw do
   # action.  This is because the new or edit/delete will be done through the Users
   # controllers.
   resources :microposts, only: [:create, :destroy]
+
+  # Refer to above
+  resources :relationships, only: [:create, :destroy]
 
   # Define pages for sessions
   match '/signup',  to: 'users#new'
